@@ -1,5 +1,5 @@
 import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
-import appReducers from './slices'; // Make sure the path is correct
+import appReducers from './slices';
 
 export const store = configureStore({
   reducer: {

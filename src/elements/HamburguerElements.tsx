@@ -25,7 +25,6 @@ const HamburguerElements: React.FC<MenuDropdownProps> = ({onNavigate}) => {
           key={index}
           style={styles.menuItem}
           onPress={() => {
-            // Since 'item.screen' is now of the correct type, no need to check for empty string
             onNavigate(item.screen);
           }}>
           <Icon name={item.icon} size={20} color="black" />
