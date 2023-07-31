@@ -11,14 +11,20 @@ import {ScrollView, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch} from '../store/store';
 import {selectProjects} from '../store/selectors';
-import {createProjectAsync} from '../store/thunks';
+import {createProjectAsync, updateProjectAsync} from '../store/thunks';
+import {Project} from '../store/types';
 
 type ProjectCreateModalProps = {
   visible: boolean;
   onClose: () => void;
+  editingProject?: Project | null;
 };
 
-const ProjectCreateModal = ({visible, onClose}: ProjectCreateModalProps) => {
+const ProjectCreateModal = ({
+  visible,
+  onClose,
+  editingProject,
+}: ProjectCreateModalProps) => {
   console.log('Modal visible:', visible);
   const dispatch = useDispatch<AppDispatch>();
   const projects = useSelector(selectProjects);
@@ -41,10 +47,40 @@ const ProjectCreateModal = ({visible, onClose}: ProjectCreateModalProps) => {
     status: '',
   });
 
-  const handleCreateProject = () => {
-    dispatch(createProjectAsync(data));
+  const handleSaveProject = () => {
+    if (editingProject) {
+      dispatch(updateProjectAsync({id: editingProject.id, project: data}));
+    } else {
+      dispatch(createProjectAsync(data));
+    }
     onClose();
   };
+
+  useEffect(() => {
+    if (editingProject) {
+      setData(editingProject);
+    } else {
+      // Reset to initial state if creating a new project
+      setData({
+        id: 0,
+        projectName: '',
+        repoUrl: '',
+        client: '',
+        developers: '',
+        ci: false,
+        cd: true,
+        frontendTecnology: '',
+        backendTecnology: '',
+        databases: '',
+        errorsCount: 0,
+        warningCount: 0,
+        deployCount: 0,
+        percentageCompletion: 0,
+        reportNc: 0,
+        status: '',
+      });
+    }
+  }, [editingProject]);
 
   useEffect(() => {
     if (projects !== null) {
@@ -179,8 +215,8 @@ const ProjectCreateModal = ({visible, onClose}: ProjectCreateModalProps) => {
             <Button
               mode="contained"
               style={styles.buttonMargin}
-              onPress={handleCreateProject}>
-              Create Project
+              onPress={handleSaveProject}>
+              {editingProject ? 'Update Project' : 'Create Project'}
             </Button>
           </Card.Content>
         </ScrollView>

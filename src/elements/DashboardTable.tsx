@@ -17,10 +17,11 @@ const DashboardTable: React.FC<DashboardTableProps> = ({cards}) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Text style={styles.header}>Projects</Text>
-        <Text style={styles.header}>Projects (Dev)</Text>
-        <Text style={styles.header}>Pending NC</Text>
-        <Text style={styles.header}>Errors (Deploy)</Text>
+        {Object.keys(cards).map((key, index) => (
+          <Text key={index} style={styles.header}>
+            {key}
+          </Text>
+        ))}
       </View>
       <View style={styles.row}>
         <Text style={styles.value}>{cards.projects}</Text>

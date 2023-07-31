@@ -7,6 +7,8 @@ import {
   fetchCommitsReportAsync,
   fetchProjectsAsync,
   createProjectAsync,
+  deleteProjectAsync,
+  updateProjectAsync,
 } from './thunks';
 import {
   CommitReport,
@@ -173,6 +175,43 @@ export const appSlice = createSlice({
         },
       )
       .addCase(createProjectAsync.rejected, state => {
+        state.project.status = 'failed';
+      })
+      .addCase(deleteProjectAsync.pending, state => {
+        state.project.status = 'loading';
+      })
+      .addCase(
+        deleteProjectAsync.fulfilled,
+        (state, action: PayloadAction<number>) => {
+          state.project.status = 'idle';
+          if (state.project.projects) {
+            state.project.projects = state.project.projects.filter(
+              project => project.id !== action.payload,
+            );
+          }
+        },
+      )
+      .addCase(deleteProjectAsync.rejected, state => {
+        state.project.status = 'failed';
+      })
+      .addCase(updateProjectAsync.pending, state => {
+        state.project.status = 'loading';
+      })
+      .addCase(
+        updateProjectAsync.fulfilled,
+        (state, action: PayloadAction<Project>) => {
+          state.project.status = 'idle';
+          if (state.project.projects) {
+            const index = state.project.projects.findIndex(
+              project => project.id === action.payload.id,
+            );
+            if (index > -1) {
+              state.project.projects[index] = action.payload;
+            }
+          }
+        },
+      )
+      .addCase(updateProjectAsync.rejected, state => {
         state.project.status = 'failed';
       });
   },

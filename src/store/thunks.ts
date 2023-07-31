@@ -7,6 +7,8 @@ import {
   fetchCommitsReport,
   fetchProjects,
   createProject,
+  deleteProject,
+  updateProject,
 } from './api';
 import {
   CommitReport,
@@ -75,5 +77,20 @@ export const createProjectAsync = createAsyncThunk(
   'projects/createProject',
   async (project: Project): Promise<Project> => {
     return await createProject(project);
+  },
+);
+
+export const deleteProjectAsync = createAsyncThunk(
+  'projects/deleteProject',
+  async (id: number): Promise<number> => {
+    await deleteProject(id);
+    return id;
+  },
+);
+
+export const updateProjectAsync = createAsyncThunk(
+  'projects/updateProject',
+  async (payload: {id: number; project: Project}): Promise<Project> => {
+    return await updateProject(payload.id, payload.project);
   },
 );
