@@ -60,7 +60,6 @@ const ProjectCreateModal = ({
     if (editingProject) {
       setData(editingProject);
     } else {
-      // Reset to initial state if creating a new project
       setData({
         id: 0,
         projectName: '',

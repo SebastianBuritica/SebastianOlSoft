@@ -31,8 +31,8 @@ const CommitsReportCard: React.FC<CommitsReportCardProps> = ({report}) => {
           data={data}
           width={320}
           height={220}
-          yAxisLabel={''} // Add yAxisLabel here
-          yAxisSuffix={''} // Add yAxisSuffix here
+          yAxisLabel={''}
+          yAxisSuffix={''}
           chartConfig={{
             backgroundColor: '#f2f2f2',
             backgroundGradientFrom: '#f2f2f2',
